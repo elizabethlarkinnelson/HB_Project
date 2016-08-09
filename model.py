@@ -1,93 +1,87 @@
-"""Models and db functions for goal_tracker db"""
+"""Models and database functions for Hackbright Project: goal_tracker"""
 
 from flask_sqlalchemy import SQLAlchemy
+import datetime
 
-
-#Creating the session object where we can perform transactions.
 db = SQLAlchemy()
 
+##############################################################################
 
-#Composing Object Relation Models(ORM)
-
-#Creating first table named "users"
 class User(db.Model):
-
-    """User model."""
+    """User of goal_tracker website"""
 
     __tablename__ = "users"
 
-    user_id = db.Column(db.Integer,
-                        primary_key=True,
-                        autoincrement=True,
-                        db.ForeignKey('goals.user_id'))
-                        #DOUBLE CHECK THIS RELATIONSHIP AFTER GOALS
-                        #TABLE CREATED!
-    email = db.Column(db.String(50),
-                        unique=True
-                        nullable=False)
-    first = db.Column(db.String(25),
-                        nullable=False)
-    last = db.Column(db.String(25),
-                        nullable=False)
-    password = db.Column(db.String(25),
-                        nullable=False)
+    user_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    email = db.Column(db.String(50), unique=True, nullable=False)
+    first = db.Column(db.String(25), nullable=False)
+    last = db.Column(db.String(25), nullable=False)
+    password = db.Column(db.String(25), nullable=False)
 
-    goals = db.relationship('Goal', backref="users")
-    #DOUBLE CHECK THIS RELATIONSHIP AFTER GOALS TABLE CREATED!
+    
+    def __repr__(self):
+
+        return "<user_id=%s email=%s first=%s last=%s>" % (self.user_id,
+            self.email, self.first, self.last)
 
 
-
-#Creating second table name "goals"
 class Goal(db.Model):
-
-    """Goal model."""
-
+    """Goal model for individual user"""
 
     __tablename__ = "goals"
 
-
-    goal_id = db.Column(db.Integer,
-                        primary_key=True.
-                        autoincrement=True,
-                        db.ForeignKey('completions.goal_id'))
-                        #DOUBLE CHECK THIS RELATIONSHIP AFTER COMPLETION
-                        #TABLE CREATED!
-    description = db.Column(db.,
-                            nullable=False)
-    ###FIX ME --> Use db.string(big number) or something else? Is there
-    #a text? 
-
-
-    #From the users table, users_id is a foreign key. Relationship
-    #declared in User.
-
-    #From the categories table, cat_id is a foreign key. Relationship
-    #declared in Category. !!!!THIS NEEDS TO BE DONE!!!!
-
-    num_of_times = db.Column(db.Integer,
-                            nullable=False)
-    time_period = db.Column(db.Integer,
-                            nullable= False
-                            default=7)
+    goal_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
+    description = db.Column(db.Text, nullable=False)
+    num_of_times = db.Column(db.Integer, nullable=False)
+    time_period = db.Column(db.Integer, default=7)
     ##Time_period unit is in DAYS.
 
+    users = db.relationship('User', backref='goals')
 
-    #Relationship Notes:
-    #In users table backref to goals table declared.
+    def __repr__(self):
 
-    completions = db.relationship('Completion', backref="goals")
-
-
-
+        return "<goal_id=%s description=%s num_of_times=%s time_period=%s>" % (
+            self.goal_id, self.description, self.num_of_times, self.time_period)
 
 
 
+class Completion(db.Model):
+    """Completion Model"""
+
+    __tablename__ = "completions"
+
+    comp_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    goal_id = db.Column(db.Integer, db.ForeignKey('goals.goal_id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
+    date_complete = db.Column(db.DateTime(timezone=True), nullable=True)
+    reflection = db.Column(db.Text, nullable=True)
+
+    goals = db.relationship('Goal', backref='completions')
+    users = db.relationship('User', backref='completions')
+
+
+    def __repr__(self):
+
+        return "<comp_id=%s date_complete=%s" % (self.comp_id, self.date_complete)
+
+
+class Categories(db.Model):
+    """Categories Model"""
+
+    __tablename__ = "categories"
+
+    cat_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    cat_name = db.Column(db.String(50), nullable=False)
+    goal_id = db.Column(db.Integer, db.ForeignKey('goals.goal_id'))
+
+    goals = db.relationship('Goal', backref='categories')
+
+
+    def __repr__(self):
+
+        return "<cat_id=%s cat_name=%s>" % (self.cat_id, self.cat_name)
     
-
-
-
-
-
 
 
 
@@ -102,7 +96,6 @@ def init_app():
 def connect_to_db(app):
     """Connect the database to our Flask app."""
 
-    # Configure to use our database
     app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres:///goal_tracker'
     app.config['SQLALCHEMY_ECHO'] = True
     db.app = app
