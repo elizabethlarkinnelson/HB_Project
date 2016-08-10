@@ -4,22 +4,39 @@
 <head>
     <title>Goal Tracker</title>
     <h1>Goal Tracker</h1>
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+
 </head>
 <body>
-    
-   <!--  {% if "user_id" in session %}
-        <a href="/logout">Logout</a>
-    {% else %}
-        <a href="/login">Login</a>
-    {% endif %} -->
 
-    <br>
+    <div class="user">
+        {% block div %}
+            {% if "user_id" in session %}
+                <a href="/logout">Logout</a>
+            {% else %}
+                <a href="/login">Login</a>
+            {% endif %}
+        {% endblock %}
+    </div>
 
-    {% block content %}
-        STUFF HERE
+       
 
-    {% endblock %}
+        <br>
+    <div class="flash_messages">
+        {% for flash in get_flashed_messages() %}
+            {{flash}}
+        {% endfor %}
+    </div>
 
+    <div class="block">
+        {% block content %}
+            STUFF TO CHANGE HERE
+
+        {% endblock %}
+    </div>
+
+<script src="/static/project-tracker.js"></script>
+<!-- #Move to head tomorrow -->
 </body>
 </html>
 

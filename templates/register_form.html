@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<script>$('.user').remove()</script>
+
+    <form action="/register" method="POST">
+        Email:<input type="text" name="email">
+        <br>
+        First Name:<input type="text" name="first_name">
+        <br>
+        Last Name:<input type="text" name="last_name">
+        <br>
+        <label for="pass1">Password:</label>
+        <input type="password" name="pass1" id="pass1">
+        <br>
+        <label for="pass2">Confirm Password:</label>
+        <input type="password" name="pass2" id="pass2" onkeyup="checkPass(); return false;">
+        <br>
+        <div id="confirmMessage" class="confirmMessage"></div>
+        <br>
+
+        <input type="submit" value="DONE! Now, tell me what you want to accomplish">    
+    </form>
+
+
+{% endblock %}

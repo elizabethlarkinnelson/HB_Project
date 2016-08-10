@@ -18,7 +18,6 @@ class User(db.Model):
     last = db.Column(db.String(25), nullable=False)
     password = db.Column(db.String(25), nullable=False)
 
-    
     def __repr__(self):
 
         return "<user_id=%s email=%s first=%s last=%s>" % (self.user_id,
@@ -87,7 +86,7 @@ class Categories(db.Model):
 
 def init_app():
     from flask import Flask
-    app = Flask(__name__)
+    from server import app
 
     connect_to_db(app)
     print "Connected to DB."
@@ -105,8 +104,7 @@ def connect_to_db(app):
 if __name__ == "__main__":
     #To utilize database interactively
     from flask import Flask
-
-    app = Flask(__name__)
+    from server import app
 
     connect_to_db(app)
     print "Connected to DB."
