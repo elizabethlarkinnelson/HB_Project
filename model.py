@@ -55,9 +55,11 @@ class Completion(db.Model):
     comp_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     goal_id = db.Column(db.Integer, db.ForeignKey('goals.goal_id'))
     date_complete = db.Column(db.DateTime(timezone=True), nullable=True)
+    #Need to add to this so DateTime timestamps completion time
     reflection = db.Column(db.Text, nullable=True)
 
-    goal = db.relationship('Goal', secondary='user', backref='completion')
+    goal = db.relationship('Goal', backref='completions')
+    user = db.relationship('User', secondary='goals', backref='completions')
     
 
 
@@ -74,26 +76,25 @@ class Categories(db.Model):
     #MANY TO MANY ASSOCIATION TABLE TO DO, SECONDARY RELATIONSHIP
 
     cat_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    goal_cat_id = db.Column(db.Integer, db.ForeignKey('goal_cat.goal_cat_id'))
     cat_name = db.Column(db.String(50), nullable=False)
 
-    goal_cats = db.relationship('Goal_Cat', secondary='goals', backref='categories')
+    goals = db.relationship('Goal', secondary='goal_cats', backref='categories')
     
 
     def __repr__(self):
 
         return "<cat_id=%s cat_name=%s>" % (self.cat_id, self.cat_name)
     
-class Goal_Cat(db.Model):
+class GoalCat(db.Model):
     """Association Model to connect Goals and Categories"""
 
-    __tablename__ = "goal_cat"
+    __tablename__ = "goal_cats"
 
     goal_cat_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     goal_id = db.Column(db.Integer, db.ForeignKey('goals.goal_id'))
     cat_id = db.Column(db.Integer, db.ForeignKey('categories.cat_id'))
 
-    goals = db.relation('Goal', secondary='user', backref='goal_cats')
+    
 
 
 
