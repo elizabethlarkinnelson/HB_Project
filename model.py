@@ -1,7 +1,9 @@
 """Models and database functions for Hackbright Project: goal_tracker"""
 
 from flask_sqlalchemy import SQLAlchemy
+#Importing for eventual use of date_complete in completions table.
 import datetime
+
 
 db = SQLAlchemy()
 
@@ -34,9 +36,9 @@ class Goal(db.Model):
     description = db.Column(db.Text, nullable=False)
     num_of_times = db.Column(db.Integer, nullable=False)
     time_period = db.Column(db.Integer, default=7)
-    ##Time_period unit is in DAYS.
+    #time_period unit is in DAYS.
 
-    users = db.relationship('User', backref='goals')
+    user = db.relationship('User', backref='goals')
 
     def __repr__(self):
 
@@ -52,12 +54,11 @@ class Completion(db.Model):
 
     comp_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     goal_id = db.Column(db.Integer, db.ForeignKey('goals.goal_id'))
-    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
     date_complete = db.Column(db.DateTime(timezone=True), nullable=True)
     reflection = db.Column(db.Text, nullable=True)
 
-    goals = db.relationship('Goal', backref='completions')
-    users = db.relationship('User', backref='completions')
+    goal = db.relationship('Goal', secondary='user', backref='completion')
+    
 
 
     def __repr__(self):
@@ -70,17 +71,31 @@ class Categories(db.Model):
 
     __tablename__ = "categories"
 
+    #MANY TO MANY ASSOCIATION TABLE TO DO, SECONDARY RELATIONSHIP
+
     cat_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    goal_cat_id = db.Column(db.Integer, db.ForeignKey('goal_cat.goal_cat_id'))
     cat_name = db.Column(db.String(50), nullable=False)
-    goal_id = db.Column(db.Integer, db.ForeignKey('goals.goal_id'))
 
-    goals = db.relationship('Goal', backref='categories')
-
+    goal_cats = db.relationship('Goal_Cat', secondary='goals', backref='categories')
+    
 
     def __repr__(self):
 
         return "<cat_id=%s cat_name=%s>" % (self.cat_id, self.cat_name)
     
+class Goal_Cat(db.Model):
+    """Association Model to connect Goals and Categories"""
+
+    __tablename__ = "goal_cat"
+
+    goal_cat_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    goal_id = db.Column(db.Integer, db.ForeignKey('goals.goal_id'))
+    cat_id = db.Column(db.Integer, db.ForeignKey('categories.cat_id'))
+
+    goals = db.relation('Goal', secondary='user', backref='goal_cats')
+
+
 
 
 
