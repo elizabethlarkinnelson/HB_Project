@@ -48,12 +48,62 @@ def register():
     flash("Registered! %s, log in to set your goals!" % first_name) 
     return redirect('/')
 
-@app.route('/login')
+@app.route('/login', methods=['GET'])
 def login_form():
     """Display login form"""
 
 
     return render_template("login_form.html")
+
+@app.route('/login', methods=['POST'])
+def login_process():
+    """Process the login and redirect user to homepage"""
+
+    email = request.form["email"]
+    password = request.form["pass1"]
+
+
+    user = User.query.filter_by(email=email).first()
+
+    if not user:
+        flash("No such user")
+        return redirect('/login')
+
+    if user.password != password:
+        flash("Incorrect password")
+        return redirect('/login')
+
+    session["user_id"] = user.user_id
+
+    flash("Logged in")
+    return redirect("/user/%s" % user.user_id)
+
+
+@app.route('/user/<int:user_id>')
+def user_goals(user_id):
+    """Display user's goals"""
+
+    user_id = session["user_id"]
+
+    if Goal.query.filter(Goal.goal_id == None):
+        flash("This week is full of possibility! Tell me what you can accomplish this week!")
+        return render_template('create_goal.html')
+        
+
+    else:
+        return render_template('user_goals.html')
+
+
+#FIXME!!!!!!!!!
+
+
+@app.route('/logout')
+def logout():
+    """Logs users out of the session"""
+
+    del session["user_id"]
+    flash("Logged Out.")
+    return redirect('/')
 
 
 if __name__ == "__main__":

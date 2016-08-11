@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <script>$('.user').remove()</script>
+
+    <form action='/login' method="POST">
+        Email:<input type="text" name="email">
+        <br>
+        Password:<input type="password" name="pass1">
+        <br>
+        <input type="submit" value="Done">
+    </form>
+
+{% endblock %}
