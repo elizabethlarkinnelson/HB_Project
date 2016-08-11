@@ -48,6 +48,13 @@ def register():
     flash("Registered! %s, log in to set your goals!" % first_name) 
     return redirect('/')
 
+@app.route('/login')
+def login_form():
+    """Display login form"""
+
+
+    return render_template("login_form.html")
+
 
 if __name__ == "__main__":
 
