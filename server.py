@@ -85,16 +85,64 @@ def user_goals(user_id):
 
     user_id = session["user_id"]
 
-    if Goal.query.filter(Goal.goal_id == None):
-        flash("This week is full of possibility! Tell me what you can accomplish this week!")
-        return render_template('create_goal.html')
-        
+    goal = Goal.query.filter_by(user_id=user_id).first()
 
+    if goal == None:
+        flash("You have no goals! Let's create some!")
+        return render_template('create_goal.html')  
     else:
-        return render_template('user_goals.html')
+        #store users attributes as an object
+        user = User.query.filter_by(user_id=user_id).one()
+        #store a list of users goals as objects in list
+        goals = Goal.query.filter_by(user_id=user_id).all()
 
 
-#FIXME!!!!!!!!!
+        #create an empty list to be iterated through
+        #in jinja on html to display individual goal details
+        goals_details = []
+
+        for goal in goals:
+        #for one object in a list of objects
+            one_goal = (goal.description,
+                        goal.num_of_times)
+            goals_details.append(one_goal)
+
+        return render_template('user_goals.html',
+                                user=user.first,
+                                goals_details=goals_details)
+
+
+@app.route('/submit_goals', methods=['POST'])
+def submit_goals():
+    """Submit user's goals and reroute to user goal page"""
+
+    user_id = session["user_id"]
+
+    cat_name = request.form.getlist('goal_type')
+
+    for name in cat_name:
+        if Categories.query.filter(Categories.cat_name == name):
+            pass
+        else:
+            category = Categories(cat_name=name)
+            db.session.add(category)
+            db.session.commit()
+
+    description = request.form['goal_description']
+
+    times_per_week = int(request.form['times_per_week'])
+
+    goal = Goal(user_id=user_id, description=description,
+        num_of_times=times_per_week)
+
+    db.session.add(goal)
+    db.session.commit()
+
+
+    flash("Your goal was added!")
+
+    return redirect("/user/%s" % user_id)
+
 
 
 @app.route('/logout')

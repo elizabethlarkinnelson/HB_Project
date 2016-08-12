@@ -1,5 +1,32 @@
 {% extends 'base.html' %}
 
 {% block content %}
-Let's make some goals!
+<br>
+<br>
+<form action="/submit_goals" method="POST">
+    What type of goal is it?
+    <input type="checkbox" name="goal_type" value="health">health
+    <input type="checkbox" name="goal_type" value="work">work
+    <input type="checkbox" name="goal_type" value="social">social
+    <br>
+    <br>
+    Tell me a little bit more about what you want to get done!
+    <br>
+    <textarea id= "goal_text" name="goal_description"></textarea>
+    <br>
+    <br>
+    How many times per week do you want to accomplish your goal?
+    <select name="times_per_week">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+    </select>
+    <br>
+    <br>
+    <input type="submit" value="Done!">
+</form>
+
+
+
+
 {% endblock %}

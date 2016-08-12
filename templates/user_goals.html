@@ -3,8 +3,24 @@
 {% block content %}
 
 
-Yay, we made it to the user_goals page
 
+
+Hello, {{user}}!!
+
+Time to get things done!!
+
+<br>
+<br>
+Your goals for this week are:
+
+
+{% for details in goals_details %}
+<div>{{ details[0]}}<div>
+<br> 
+<br>
+<div>{{ details[1]}} times this week<div>
+
+{% endfor %}
 
 
 {% endblock %}
