@@ -5,22 +5,40 @@
 
 
 
-Hello, {{user}}!!
+Hello, {{user.first}}!!
 
 Time to get things done!!
 
 <br>
 <br>
-Your goals for this week are:
+    <p> 
+    So, the way things work here at goal_tracker:
+    Weekly goals go from Sunday to Sunday at midnight. 
+    So if you create a goal on Wednesday at 7pm, it'll have
+    a deadline of Sunday at 11:59pm.
+    If you want to extend the deadline, simply click the extend link
+    below you goals and you'll have that goal for another week, with
+    the same amount of times as the previous week.
 
-
-{% for details in goals_details %}
-<div>{{ details[0]}}<div>
-<br> 
+    You can also edit your goal if you want it to be slightly different
+    for the next week, or even create a new goal if you're smashing your goals.
+    Which you are. Duh.
+    </p>    
 <br>
-<div>{{ details[1]}} times this week<div>
+<br>
+Your goals for this week are:
+{% for }
 
-{% endfor %}
+    {% for goal in goals %}
+        <div>{{goal.description}}<div>
+        <br> 
+        <br>
+        {% if goal.num_of_times == 1 %}
+            <div>{{goal.num_of_times}} time this week<div>
+        {% else %}
+            <div>{{goal.num_of_times}} times this week<div>
+    {% endif %}
+    {% endfor %}
 
 
 {% endblock %}

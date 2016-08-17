@@ -5,34 +5,40 @@ from jinja2 import StrictUndefined
 
 from model import connect_to_db, db, User, Goal, Completion, Categories
 
-# #App declaration for connect_to_db function in model
+#app variable binding for argument in connect_to_db function in model
 app = Flask(__name__)
 
 
-# #This is added so Flask sessions and the debugtoolbar can be used
+#added for Flask sessions and debugtoolbar use
 app.secret_key = "ABC"
-# #To raise an error in Jinja2 so it pass silently
+#to raise an error in Jinja2 so it can't pass silently
 app.jinja_env.undefined = StrictUndefined
+#bypasses bug that results in server restart for each update to jinja template
+app.jinja_env.auto_reload = True
 
 
 @app.route('/')
 def index():
-    """Homepage."""
+    """Homepage"""
 
-
-    return render_template('homepage.html')
+    #To account if the user has already signed in
+    #redirect them to their users goals
+    if "user_id" in session:
+        return redirect("/user/%s" % session["user_id"])
+    else:
+        return render_template('homepage.html')
 
 
 @app.route('/sign_up')
 def sign_up():
-    """The form fields for a new user to register"""
+    """Form for a new user to register"""
 
     return render_template('register_form.html')
 
 
 @app.route('/register', methods=['POST'])
 def register():
-    """Submits user data input and reroutes to homepage"""
+    """Submits user sign up data and reroutes to homepage"""
 
     email = request.form["email"]
     first_name = request.form["first_name"]
@@ -44,16 +50,16 @@ def register():
     db.session.add(new_user)
     db.session.commit()
 
-
-    flash("Registered! %s, log in to set your goals!" % first_name) 
+    flash("Registered! %s, log in to set your goals!" % first_name)
     return redirect('/')
+
 
 @app.route('/login', methods=['GET'])
 def login_form():
     """Display login form"""
 
+    return render_template('login_form.html')
 
-    return render_template("login_form.html")
 
 @app.route('/login', methods=['POST'])
 def login_process():
@@ -62,7 +68,8 @@ def login_process():
     email = request.form["email"]
     password = request.form["pass1"]
 
-
+    #queries goal_tracker db to see if user exists, returns
+    #'None' if user does not exist
     user = User.query.filter_by(email=email).first()
 
     if not user:
@@ -85,36 +92,27 @@ def user_goals(user_id):
 
     user_id = session["user_id"]
 
+    #queries goal_tracker db table 'goals' to see if
+    #the user in the session has goals in table
     goal = Goal.query.filter_by(user_id=user_id).first()
 
-    if goal == None:
+    if goal is None:
         flash("You have no goals! Let's create some!")
-        return render_template('create_goal.html')  
+        return render_template('create_goal.html')
     else:
         #store users attributes as an object
         user = User.query.filter_by(user_id=user_id).one()
         #store a list of users goals as objects in list
         goals = Goal.query.filter_by(user_id=user_id).all()
 
-
-        #create an empty list to be iterated through
-        #in jinja on html to display individual goal details
-        goals_details = []
-
-        for goal in goals:
-        #for one object in a list of objects
-            one_goal = (goal.description,
-                        goal.num_of_times)
-            goals_details.append(one_goal)
-
         return render_template('user_goals.html',
-                                user=user.first,
-                                goals_details=goals_details)
+                               user=user,
+                               goals=goals)
 
 
 @app.route('/submit_goals', methods=['POST'])
 def submit_goals():
-    """Submit user's goals and reroute to user goal page"""
+    """Submit user's created goal and reroutes to user goal page"""
 
     user_id = session["user_id"]
 
@@ -133,16 +131,14 @@ def submit_goals():
     times_per_week = int(request.form['times_per_week'])
 
     goal = Goal(user_id=user_id, description=description,
-        num_of_times=times_per_week)
+                num_of_times=times_per_week)
 
     db.session.add(goal)
     db.session.commit()
 
-
     flash("Your goal was added!")
 
     return redirect("/user/%s" % user_id)
-
 
 
 @app.route('/logout')
@@ -159,4 +155,4 @@ if __name__ == "__main__":
     app.debug = True
     connect_to_db(app)
     DebugToolbarExtension(app)
-    app.run(host="0.0.0.0")
+    app.run(host="0.0.0.0")  

@@ -9,6 +9,7 @@ class GoalTrackerTests(unittest.TestCase):
     """Tests for goal_tracker site."""
 
     def setUp(self):
+        """Stuff to do before every test."""
         self.client = server.app.test_client()
         server.app.config['TESTING'] = True
 
@@ -18,9 +19,28 @@ class GoalTrackerTests(unittest.TestCase):
 
     # def test_user_goals(self):
     #     result = self.client.get("/user/<int:user_id>")
+    #FIXME!!!!!!!
 
 
+class GoalTrackerDatabse(unittest.TestCase):
+    """Flask tests the use of the database"""
 
+    def setUp(self):
+        """Stuff to do before every test."""
+        self.client = server.app.test_client()
+        app.config['TESTING'] = True
+        connect_to_db(server.app, "postgresql:////goal_tracker")
+        db.create_all()
+        example_data()
+        #FIX ME!!! Still need to make example_data function
+        #in model file.
+
+
+    def tearDown(self):
+        """To do at the end of every test."""
+
+        db.session.close()
+        db.drop_all()
 
 
 

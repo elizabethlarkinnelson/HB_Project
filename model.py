@@ -1,13 +1,13 @@
 """Models and database functions for Hackbright Project: goal_tracker"""
 
 from flask_sqlalchemy import SQLAlchemy
-#Importing for eventual use of date_complete in completions table.
-import datetime
 
+from model_util import *
 
 db = SQLAlchemy()
 
 ##############################################################################
+
 
 class User(db.Model):
     """User of goal_tracker website"""
@@ -19,11 +19,16 @@ class User(db.Model):
     first = db.Column(db.String(25), nullable=False)
     last = db.Column(db.String(25), nullable=False)
     password = db.Column(db.String(25), nullable=False)
+    #This was added to account for eventual addition of user
+    #data of timezone.
+    time_zone = db.Column(db.String(25), nullable=True)
 
     def __repr__(self):
 
         return "<user_id=%s email=%s first=%s last=%s>" % (self.user_id,
-            self.email, self.first, self.last)
+                                                           self.email,
+                                                           self.first,
+                                                           self.last)
 
 
 class Goal(db.Model):
@@ -35,6 +40,10 @@ class Goal(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
     description = db.Column(db.Text, nullable=False)
     num_of_times = db.Column(db.Integer, nullable=False)
+    date_started = db.Column(db.DateTime(timezone=True),
+                             nullable=False, default=make_timestamp)
+    active = db.Column(db.Boolean, nullable=False, default=True)
+    #UTC timezone date/time stamp.
     time_period = db.Column(db.Integer, default=7)
     #time_period unit is in DAYS.
 
@@ -46,7 +55,6 @@ class Goal(db.Model):
             self.goal_id, self.description, self.num_of_times, self.time_period)
 
 
-
 class Completion(db.Model):
     """Completion Model"""
 
@@ -54,14 +62,13 @@ class Completion(db.Model):
 
     comp_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     goal_id = db.Column(db.Integer, db.ForeignKey('goals.goal_id'))
-    date_complete = db.Column(db.DateTime(timezone=True), nullable=True)
-    #Need to add to this so DateTime timestamps completion time
+    date_complete = db.Column(db.DateTime(timezone=True),
+                              nullable=True, default=make_timestamp)
+    #UTC timezone date/time stamp.
     reflection = db.Column(db.Text, nullable=True)
 
     goal = db.relationship('Goal', backref='completions')
     user = db.relationship('User', secondary='goals', backref='completions')
-    
-
 
     def __repr__(self):
 
@@ -79,12 +86,12 @@ class Categories(db.Model):
     cat_name = db.Column(db.String(50), nullable=False)
 
     goals = db.relationship('Goal', secondary='goal_cats', backref='categories')
-    
 
     def __repr__(self):
 
         return "<cat_id=%s cat_name=%s>" % (self.cat_id, self.cat_name)
-    
+
+
 class GoalCat(db.Model):
     """Association Model to connect Goals and Categories"""
 
@@ -94,11 +101,7 @@ class GoalCat(db.Model):
     goal_id = db.Column(db.Integer, db.ForeignKey('goals.goal_id'))
     cat_id = db.Column(db.Integer, db.ForeignKey('categories.cat_id'))
 
-    
-
-
-
-
+############################################################################
 
 def init_app():
     from flask import Flask
@@ -121,6 +124,8 @@ if __name__ == "__main__":
     #To utilize database interactively
     from flask import Flask
     from server import app
+
+#FIXME!! Need to add to db.create_all() if it doesn't exist already
 
     connect_to_db(app)
     print "Connected to DB."
