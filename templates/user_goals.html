@@ -27,8 +27,8 @@ Time to get things done!!
 <br>
 <br>
 Your goals for this week are:
-{% for }
-
+<br>
+<br>
     {% for goal in goals %}
         <div>{{goal.description}}<div>
         <br> 
@@ -37,6 +37,7 @@ Your goals for this week are:
             <div>{{goal.num_of_times}} time this week<div>
         {% else %}
             <div>{{goal.num_of_times}} times this week<div>
+                <br>
     {% endif %}
     {% endfor %}
 
