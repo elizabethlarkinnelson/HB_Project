@@ -3,28 +3,36 @@
 <html>
 <head>
     <title>Goal Tracker</title>
-    <h1>Goal Tracker</h1>
     <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
-    <script src="/static/project-tracker.js"></script>
     <link rel="stylesheet" 
         href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet"
         href="/static/goal_tracker.css">
+    <script src="/static/goal_tracker.js"></script>
 
 </head>
 <body>
-
-    <div class="user">
-        {% block div %}
-            {% if "user_id" in session %}
-                <a href="/logout">Logout</a>
-            {% else %}
-                <a href="/login">Login</a>
-            {% endif %}
-        {% endblock %}
-    </div>
-
-       
+    <!-- This is modified bootstrap "Right-Aligned Navigation Bar" -->
+     <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+            </div>
+            <ul class="nav navbar-nav">
+              <li class="active"><a href="/">Home</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <div id='login'>
+                {% block div %}
+                    {% if "user_id" in session %}
+                        <li><a href="/logout">Logout</a></li>
+                    {% else %}
+                        <li><a href="/login">Login</a><li>
+                    {% endif %}
+                {% endblock %}
+                </div>
+            </ul>
+        </div>
+    </nav>
 
         <br>
     <div class="flash_messages">

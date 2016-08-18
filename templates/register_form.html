@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <script>$('.user').remove()</script>
 
     <form action="/register" method="POST">
         Email:<input type="text" name="email">
@@ -21,6 +20,5 @@
 
         <input type="submit" value="DONE! Now, tell me what you want to accomplish">    
     </form>
-<div>Meant to click sign in?</div>
-    <a href="/login">Login</a>
+
 {% endblock %}

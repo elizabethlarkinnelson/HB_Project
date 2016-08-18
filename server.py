@@ -1,6 +1,12 @@
 from flask import Flask, render_template, request, flash, session, redirect
 from flask_debugtoolbar import DebugToolbarExtension
 
+#FIXME!!!! This was imported to see if schedule API
+#can work within Flask
+from model_util import schedule_works
+import schedule
+
+
 from jinja2 import StrictUndefined
 
 from model import connect_to_db, db, User, Goal, Completion, Categories
@@ -151,6 +157,11 @@ def logout():
 
 
 if __name__ == "__main__":
+   
+   #FIXME!!!! Testing of schedule api.
+    schedule.every(10).seconds.do(schedule_works)
+    schedule.run_pending()
+
 
     app.debug = True
     connect_to_db(app)
