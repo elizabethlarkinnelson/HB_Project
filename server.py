@@ -111,6 +111,13 @@ def user_goals(user_id):
                                goals=goals)
 
 
+@app.route('/add_goal')
+def add_goal():
+    """Allow's user to add goals."""
+
+    return render_template('create_goal.html')
+
+
 @app.route('/submit_goals', methods=['POST'])
 def submit_goals():
     """Submit user's created goal and reroutes to user goal page"""
