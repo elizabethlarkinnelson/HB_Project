@@ -44,6 +44,7 @@ class Goal(db.Model):
                              nullable=False, default=make_timestamp)
     active = db.Column(db.Boolean, nullable=False, default=True)
     #UTC timezone date/time stamp.
+    exempt = db.Column(db.Boolean, nullable=False, default=False)
     time_period = db.Column(db.Integer, default=7)
     #time_period unit is in DAYS.
 
