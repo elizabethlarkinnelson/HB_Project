@@ -39,6 +39,11 @@ Your goals for this week are:
             <div>{{goal.num_of_times}} times this week<div>
                 <br>
     {% endif %}
+        <form class="one_completion" id={{goal.goal_id}}>
+        <input type="radio" name="one_completion" value={{goal.goal_id}}>
+        I did it!
+        </form>
+        <br>
     {% endfor %}
 
 

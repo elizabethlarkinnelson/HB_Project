@@ -6,6 +6,7 @@ from jinja2 import StrictUndefined
 
 from model import connect_to_db, db, User, Goal, Completion, Categories
 
+
 #app variable binding for argument in connect_to_db function in model
 app = Flask(__name__)
 
@@ -147,6 +148,42 @@ def submit_goals():
     flash("Your goal was added!")
 
     return redirect("/user/%s" % user_id)
+
+
+@app.route("/update_completions.json", methods=['POST'])
+def get_completion_info():
+    """Get the info for goal completion"""
+
+    goal_id = request.form.get("goal_id")
+    completion = Completion(goal_id="goal_id")
+    db.session.add(completion)
+    db.session.commit()
+
+    goal = Goal.query.filter(Goal.goal_id == goal_id).one()
+
+    completions = goal.completions
+
+    total_completions = 0
+
+    for completion in completions:
+        total_completions += 1
+
+    if (total_completions / goal.num_of_times) != 1:
+        num_left = (goal.num_of_times - total_completions)
+        if num_left == 1:
+            message = "Just " + num_left + " time left!"
+            remove_button = False
+            return jsonify(message, remove_button, goal_id)
+
+        else:
+            message = "Just " + num_left + " times left!"
+            remove_button = False
+            return jsonify(message, remove_button, goal_id)
+
+    else:
+        message = "You've completed " + goal.description + " for the week!"
+        remove_button = True
+        return jsonify(message, remove_button, goal_id)
 
 
 @app.route('/logout')
