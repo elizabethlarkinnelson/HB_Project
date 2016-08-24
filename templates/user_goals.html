@@ -1,9 +1,11 @@
 {% extends 'base.html' %}
-
+{% block page_specific_script_tag %}
+    <script src="/static/js/update_goals.js"></script>
+{% endblock %}
 {% block content %}
 
 
-
+<div class="click">
 
 Hello, {{user.first}}!!
 
@@ -29,24 +31,64 @@ Time to get things done!!
 Your goals for this week are:
 <br>
 <br>
-    {% for goal in goals %}
-        <div>{{goal.description}}<div>
-        <br> 
-        <br>
-        {% if goal.num_of_times == 1 %}
-            <div>{{goal.num_of_times}} time this week<div>
-        {% else %}
-            <div>{{goal.num_of_times}} times this week<div>
-                <br>
-    {% endif %}
-        <form class="one_completion" id={{goal.goal_id}}>
-        <input type="radio" name="one_completion" value={{goal.goal_id}}>
-        I did it!
-        </form>
-        <br>
-    {% endfor %}
+<br>
+<br>
+<br>
+<!-- FIX ME!!! The formatting of this appears hard to read. Do
+     research about good jinja formatting.  As well as commenting the below
+     code -->
 
+    <div id="goal_display">
+
+    {% for goal in goals %}
+            <br>
+            <br>
+            <div>{{goal.description}}</div>
+                <br> 
+                    <br>
+                        {% if goal.num_of_times == 1 %}
+                            <div>{{goal.num_of_times}} time this week</div>
+                        {% else %}
+                            <div>{{goal.num_of_times}} times this week</div>
+                            <br>
+                            <br>
+                            <br>
+                        {% endif %}
+
+                        <!-- New statement!! FIXME!! -->
+                        {% if goals_counts[goal.goal_id] %}
+                                {% if goals_counts[goal.goal_id] / goal.num_of_times != 1 %}
+                                    <div id={{goal.goal_id}}>
+                                        <input type="radio" name="one_completion" value={{goal.goal_id}}>
+                                        I did it!
+                                            <br>
+                                            <br>
+                                    </div>
+                                {% else %}
+                                <div id={{goal.goal_id}}>
+                                    Goal Complete!!
+                                    <br>
+                                    <br>
+                                </div>
+                                {% endif %}
+                        {% else %}
+                                <div id={{goal.goal_id}}>
+                                        <input type="radio" name="one_completion" value={{goal.goal_id}}>
+                                            I did it!
+                                        <br>
+                                        <br>
+                                </div>
+                            {% endif %}
+            </div>
+        
+    {% endfor %}
+    </div>
 
 <a href='/add_goal'>Add another goal for this week!</a>
+<br>
+<br>
+<a href='/goal_visualization'>See what you've accomplished!</a>
+
+</div>
 
 {% endblock %}

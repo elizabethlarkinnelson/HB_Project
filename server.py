@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, flash, session, redirect
+from flask import Flask, render_template, request, flash, session, redirect, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
 
 
@@ -51,6 +51,9 @@ def register():
 
     db.session.add(new_user)
     db.session.commit()
+
+    #FIX ME!!! NEED TO WRITE CODE TO ACCOUNT FOR USER EMAIL ALREADY
+    #EXISTING
 
     flash("Registered! %s, log in to set your goals!" % first_name)
     return redirect('/')
@@ -107,9 +110,16 @@ def user_goals(user_id):
         #store a list of users goals as objects in list
         goals = Goal.query.filter_by(user_id=user_id).all()
 
+        goals_counts = {}
+
+        for goal in goals:
+            goal_count = Completion.query.filter_by(goal_id=goal.goal_id).count()
+            goals_counts[goal.goal_id] = goal_count
+
         return render_template('user_goals.html',
                                user=user,
-                               goals=goals)
+                               goals=goals,
+                               goals_counts=goals_counts)
 
 
 @app.route('/add_goal')
@@ -155,11 +165,11 @@ def get_completion_info():
     """Get the info for goal completion"""
 
     goal_id = request.form.get("goal_id")
-    completion = Completion(goal_id="goal_id")
+    completion = Completion(goal_id=int(goal_id))
     db.session.add(completion)
     db.session.commit()
 
-    goal = Goal.query.filter(Goal.goal_id == goal_id).one()
+    goal = Goal.query.filter(Goal.goal_id == int(goal_id)).one()
 
     completions = goal.completions
 
@@ -168,22 +178,35 @@ def get_completion_info():
     for completion in completions:
         total_completions += 1
 
-    if (total_completions / goal.num_of_times) != 1:
+    if (float(total_completions) / float(goal.num_of_times)) != 1:
         num_left = (goal.num_of_times - total_completions)
         if num_left == 1:
-            message = "Just " + num_left + " time left!"
+            message = "Just " + str(num_left) + " time left!"
             remove_button = False
-            return jsonify(message, remove_button, goal_id)
+            return jsonify(message=message,
+                           remove_button=remove_button, goal_id=goal_id)
 
         else:
-            message = "Just " + num_left + " times left!"
+            message = "Just " + str(num_left) + " times left!"
             remove_button = False
-            return jsonify(message, remove_button, goal_id)
+            return jsonify(message=message,
+                           remove_button=remove_button, goal_id=goal_id)
 
     else:
         message = "You've completed " + goal.description + " for the week!"
         remove_button = True
-        return jsonify(message, remove_button, goal_id)
+        return jsonify(message=message,
+                       remove_button=remove_button, goal_id=goal_id)
+
+    return jsonify("Hi")
+
+
+@app.route('/goal_visualization')
+def goal_vis():
+    """Displays a page where user can input parameters to visualize
+    previous goals"""
+
+    return render_template('goal_visualization.html')
 
 
 @app.route('/logout')
@@ -196,11 +219,11 @@ def logout():
 
 
 if __name__ == "__main__":
- 
+
     app.debug = True
     connect_to_db(app)
     DebugToolbarExtension(app)
-    
+
     app.run(host="0.0.0.0")
 
     
