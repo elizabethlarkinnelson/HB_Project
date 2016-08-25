@@ -209,6 +209,30 @@ def goal_vis():
     return render_template('goal_visualization.html')
 
 
+@app.route('/goal_completion_data.json', methods=['GET'])
+def goal_completion_data():
+    """Query the database for user's goal/completion info"""
+
+    user_id = session["user_id"]
+
+    #Returns an object with all user info.  Currently not using!
+    user = User.query.filter(User.user_id == user_id).one()
+    print "\n\n\n\n\n\n", user, "\n\n\n\n\n\n"
+    #This will return a list of objects of user's goals
+    goals = user.goals
+    completions = user.completions
+    print "\n\n\n\n\n\n", completions, "\n\n\n\n\n\n"
+
+    #Working on creating a dictionary to pass through
+    #in JSON
+    # goals = {"goal"}
+
+
+
+    hi = "hi"
+    return jsonify(hi=hi)
+
+
 @app.route('/logout')
 def logout():
     """Logs users out of the session"""

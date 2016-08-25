@@ -1,16 +1,14 @@
 {% extends 'base.html' %}
 {% block page_specific_script_tag %}
-<script src="/static/js/data_vis.js"></script>
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+     <script src="/static/js/data_vis.js"></script>
+        <link rel="stylesheet" href="/static/goal_vis.css">
 {% endblock %}
 
 
 {% block content %}
-<!DOCTYPE html>
-<html>
-<body>
-    <div class="chart">
-    </div>
-</body>
-</html>
+
+<svg class="chart"></svg>
+
 
 {% endblock %}

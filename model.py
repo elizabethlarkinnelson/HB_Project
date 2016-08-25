@@ -73,7 +73,7 @@ class Completion(db.Model):
 
     def __repr__(self):
 
-        return "<comp_id=%s date_complete=%s" % (self.comp_id, self.date_complete)
+        return "<comp_id=%s date_complete=%s>" % (self.comp_id, self.date_complete)
 
 
 class Categories(db.Model):
