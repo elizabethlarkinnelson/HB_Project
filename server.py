@@ -1,6 +1,8 @@
 from flask import Flask, render_template, request, flash, session, redirect, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
 
+from datetime import datetime
+
 
 from jinja2 import StrictUndefined
 
@@ -217,20 +219,44 @@ def goal_completion_data():
 
     #Returns an object with all user info.  Currently not using!
     user = User.query.filter(User.user_id == user_id).one()
-    print "\n\n\n\n\n\n", user, "\n\n\n\n\n\n"
+
     #This will return a list of objects of user's goals
     goals = user.goals
+
+    print"\n\n\n\n\n\n", goals, "\n\n\n\n\n\n"
     completions = user.completions
-    print "\n\n\n\n\n\n", completions, "\n\n\n\n\n\n"
 
     #Working on creating a dictionary to pass through
     #in JSON
-    # goals = {"goal"}
+    goals_info = []
+    #Iterate through a list of goal objects
+    #adding the goal class attributes to a dictionary
+    #that is appended to a list and eventually sent
+    #to success handler in JSON in file data_vis.js
+    for goal in goals:
+        for completion in completions:
+            if goal.goal_id == completion.goal_id:
+                one_goal_info = {}
 
+                one_goal_info["comp_id"] = completion.comp_id
 
+                one_goal_info["goal_id"] = goal.goal_id
+                one_goal_info["description"] = goal.description
+                one_goal_info["num_of_times"] = goal.num_of_times
 
-    hi = "hi"
-    return jsonify(hi=hi)
+                #For date started I am converting the date to a list
+                #2016-08-24 would be [2016, 08, 24]
+                time = goal.date_started.strftime("%A, %B, %d, %Y")
+                one_goal_info["date_started"] = time
+
+                one_goal_info["active"] = goal.active
+                one_goal_info["exempt"] = goal.exempt
+                one_goal_info["time_period"] = goal.time_period
+
+                #FIX ME!!!!!
+                goals_info.append(one_goal_info)
+
+    return jsonify(goals_info=goals_info)
 
 
 @app.route('/logout')

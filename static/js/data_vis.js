@@ -1,16 +1,23 @@
 $(document).ready(function(){
 
-//variables for user's data accessible to D3 JS, set by
-// document.ready function below.
 
-    var goal_info = {};
-    var completion_info = {};
-
+    var goalInfo = null;
 
 // AJAX code to grab user's goal data
 
     function setUserInfo(result){
-        console.log(result.hi);
+        goalInfo = result.goals_info;
+        console.log(goalInfo);
+
+        var goals_percent_complete = 0;
+
+        for (i = 0; i < goalInfo.length; i++){
+            if (goalInfo[i].active === true){
+                goals_percent_complete += (1 / (goalInfo[i].num_of_times));
+                console.log(goals_percent_complete);
+            }
+        }
+        initialize(goals_percent_complete * 10);
     }
 
     function retrieveGoalCompletionInfo(){
@@ -19,38 +26,38 @@ $(document).ready(function(){
 
     retrieveGoalCompletionInfo();
 
-    // });
+    
 
-
-
-// D3 goal visualization code  
-
-    var data = [6, 22, 15, 16, 23, 42];
-
-    var width = 420,
-        barHeight = 20;
-
-    var x = d3.scale.linear()
-        .domain([0, d3.max(data)])
-        .range([0, width]);
-
-    var chart = d3.select(".chart")
-        .attr("width", width)
-        .attr("height", barHeight * data.length);
-
-    var bar = chart.selectAll("g")
-        .data(data)
-      .enter().append("g")
-        .attr("transform", function(d, i) { return "translate(0," + i * barHeight + ")"; });
-
-    bar.append("rect")
-        .attr("width", x)
-        .attr("height", barHeight - 1);
-
-    bar.append("text")
-        .attr("x", function(d) { return x(d) - 3; })
-        .attr("y", barHeight / 2)
-        .attr("dy", ".35em")
-        .text(function(d) { return d; });
 
 });
+
+
+function initialize(percentComplete){
+
+    div1 = d3.select("#div1");
+    
+    viz1 = vizuly.component.radial_progress(document.getElementById("div1"));
+
+    theme1 = theme1 = vizuly.theme.radial_progress(viz1).skin(vizuly.skin.RADIAL_PROGRESS_FIRE);
+
+    viz1.data(percentComplete)
+            .height(600)
+            .min(0)
+            .max(100)
+            .capRadius(1)
+            // .on("tween",onTween);
+            // .on("mouseover",onMouseOver)
+            // .on("mouseout",onMouseOut)
+            // .on("click",onClick);
+            .startAngle(180)
+            .endAngle(180)
+            .arcThickness(0.04)
+            .label(function(d,i) { return d3.format(".0f")(d) + "%";});
+
+    viz1.update();
+}
+
+// function onTween(viz,i) {
+//     viz.selection().selectAll(".vz-radial_progress-label")
+//         .text(viz.label()(viz.data() * i));
+// }
