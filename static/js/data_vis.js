@@ -5,19 +5,10 @@ $(document).ready(function(){
 
 // AJAX code to grab user's goal data
 
+    // FIXME
     function setUserInfo(result){
-        goalInfo = result.goals_info;
-        console.log(goalInfo);
-
-        var goals_percent_complete = 0;
-
-        for (i = 0; i < goalInfo.length; i++){
-            if (goalInfo[i].active === true){
-                goals_percent_complete += (1 / (goalInfo[i].num_of_times));
-                console.log(goals_percent_complete);
-            }
-        }
-        initialize(goals_percent_complete * 10);
+        percentComplete = result.percentage_complete;
+        initialize(percentComplete);
     }
 
     function retrieveGoalCompletionInfo(){
@@ -26,7 +17,7 @@ $(document).ready(function(){
 
     retrieveGoalCompletionInfo();
 
-    
+    // FIX ME!!!! Need to add goals through jason that have no completions!
 
 
 });
@@ -45,10 +36,6 @@ function initialize(percentComplete){
             .min(0)
             .max(100)
             .capRadius(1)
-            // .on("tween",onTween);
-            // .on("mouseover",onMouseOver)
-            // .on("mouseout",onMouseOut)
-            // .on("click",onClick);
             .startAngle(180)
             .endAngle(180)
             .arcThickness(0.04)
@@ -56,8 +43,3 @@ function initialize(percentComplete){
 
     viz1.update();
 }
-
-// function onTween(viz,i) {
-//     viz.selection().selectAll(".vz-radial_progress-label")
-//         .text(viz.label()(viz.data() * i));
-// }

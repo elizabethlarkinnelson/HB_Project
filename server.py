@@ -3,10 +3,9 @@ from flask_debugtoolbar import DebugToolbarExtension
 
 from datetime import datetime
 
-
 from jinja2 import StrictUndefined
 
-from model import connect_to_db, db, User, Goal, Completion, Categories
+from model import connect_to_db, db, User, Goal, Completion, Categories, Reminders
 
 
 #app variable binding for argument in connect_to_db function in model
@@ -112,6 +111,13 @@ def user_goals(user_id):
         #store a list of users goals as objects in list
         goals = Goal.query.filter_by(user_id=user_id).all()
 
+        #FIXME!! When refactoring code, need to add % completion
+        #which is already written, but needs to be added
+        #as a class method.  This needs to passed through
+        #so when the modal appears for text reminders
+        #goals which have already been completed for the week
+        #don't show up!
+
         goals_counts = {}
 
         for goal in goals:
@@ -180,6 +186,7 @@ def get_completion_info():
     for completion in completions:
         total_completions += 1
 
+
     if (float(total_completions) / float(goal.num_of_times)) != 1:
         num_left = (goal.num_of_times - total_completions)
         if num_left == 1:
@@ -223,40 +230,37 @@ def goal_completion_data():
     #This will return a list of objects of user's goals
     goals = user.goals
 
-    print"\n\n\n\n\n\n", goals, "\n\n\n\n\n\n"
-    completions = user.completions
+    times_complete = 0
+    times_total = 0
 
-    #Working on creating a dictionary to pass through
-    #in JSON
-    goals_info = []
-    #Iterate through a list of goal objects
-    #adding the goal class attributes to a dictionary
-    #that is appended to a list and eventually sent
-    #to success handler in JSON in file data_vis.js
+    #FIX ME!! Need to complete count of all completions for a specific goal
     for goal in goals:
-        for completion in completions:
-            if goal.goal_id == completion.goal_id:
-                one_goal_info = {}
+        completions = Completion.query.filter((Goal.goal_id == goal.goal_id)
+                                              & (Completion.goal_id == goal.goal_id)).count()
+        times_complete += completions
+        times_total += goal.num_of_times
 
-                one_goal_info["comp_id"] = completion.comp_id
+    percentage_complete = int((float(times_complete) / float(times_total)) * 100)
 
-                one_goal_info["goal_id"] = goal.goal_id
-                one_goal_info["description"] = goal.description
-                one_goal_info["num_of_times"] = goal.num_of_times
+    return jsonify(percentage_complete=percentage_complete)
 
-                #For date started I am converting the date to a list
-                #2016-08-24 would be [2016, 08, 24]
-                time = goal.date_started.strftime("%A, %B, %d, %Y")
-                one_goal_info["date_started"] = time
+#FIXME!!!
+#Need route to deal with goal reminders
 
-                one_goal_info["active"] = goal.active
-                one_goal_info["exempt"] = goal.exempt
-                one_goal_info["time_period"] = goal.time_period
 
-                #FIX ME!!!!!
-                goals_info.append(one_goal_info)
+@app.route('/update_reminders.json', methods=['POST'])
+def set_text_reminder():
+    """Create new reminder id in database"""
 
-    return jsonify(goals_info=goals_info)
+    goal_id = request.form.get("goal_id")
+
+    week_day = request.form.get("week_day")
+
+    reminder = Reminders(goal_id=goal_id, text_days=week_day)
+    db.session.add(reminder)
+    db.session.commit()
+
+    return jsonify(week_day=week_day, goal_id=goal_id)
 
 
 @app.route('/logout')

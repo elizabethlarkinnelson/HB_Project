@@ -17,6 +17,11 @@ $(document).ready(function(){
 
     }
 
+    function reminderUpdated(result){
+        $("input[name*='"+result.goal_id+"'][value='"+result.week_day+"']").remove();
+        $("#"+result.goal_id+"."+result.week_day).remove();
+    }
+
 
 
 
@@ -33,8 +38,24 @@ $(document).ready(function(){
     }
 
 
+    function updateReminders(evt){
+        evt.stopImmediatePropagation();
+
+        var formInput = {
+            "goal_id": $(this).attr("name"),
+            "week_day": $(this).val(),
+        };
+
+        $.post("/update_reminders.json",
+                formInput,
+                reminderUpdated);
+
+    }
+
+
 
     $('input:radio').on('change', updateGoals);
+    $('input:checkbox').on('change', updateReminders);
 
 
 });

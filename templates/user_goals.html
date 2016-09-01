@@ -7,33 +7,14 @@
 
 <div class="click">
 
-Hello, {{user.first}}!!
-
-Time to get things done!!
+Hello, {{user.first}}!
 
 <br>
 <br>
     <p> 
-    So, the way things work here at goal_tracker:
-    Weekly goals go from Sunday to Sunday at midnight. 
-    So if you create a goal on Wednesday at 7pm, it'll have
-    a deadline of Sunday at 11:59pm.
-    If you want to extend the deadline, simply click the extend link
-    below you goals and you'll have that goal for another week, with
-    the same amount of times as the previous week.
+    Weekly Goals:
+    </p>   
 
-    You can also edit your goal if you want it to be slightly different
-    for the next week, or even create a new goal if you're smashing your goals.
-    Which you are. Duh.
-    </p>    
-<br>
-<br>
-Your goals for this week are:
-<br>
-<br>
-<br>
-<br>
-<br>
 <!-- FIX ME!!! The formatting of this appears hard to read. Do
      research about good jinja formatting.  As well as commenting the below
      code -->
@@ -55,7 +36,7 @@ Your goals for this week are:
                             <br>
                         {% endif %}
 
-                        <!-- New statement!! FIXME!! -->
+                        <!-- New statement!! FIXME!! Add commenting to make for loops clearer -->
                         {% if goals_counts[goal.goal_id] %}
                                 {% if goals_counts[goal.goal_id] / goal.num_of_times != 1 %}
                                     <div id={{goal.goal_id}}>
@@ -83,7 +64,53 @@ Your goals for this week are:
         
     {% endfor %}
     </div>
+    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">
+        Set Up Reminders!
+    </button>
+            <!-- Modal -->
+        <div id="myModal" class="modal fade" role="dialog">
+          <div class="modal-dialog">
 
+            <!-- Modal content-->
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Get Texts</h4>
+              </div>
+              <div class="modal-body">
+                <p>I want a reminder for:</p>
+                    <ul> {% for goal in goals %}
+                          <li>  {{goal.description}} 
+
+                          </li>
+                        <form>
+                            <input type="checkbox" name={{goal.goal_id}} value="Mon">
+                                <label class="Mon" id={{goal.goal_id}}> Mon </label>
+                            <input type="checkbox" name={{goal.goal_id}} value="Tues">
+                                <label class="Tues" id={{goal.goal_id}}> Tues </label>
+                            <input type="checkbox" name={{goal.goal_id}} value="Wed">
+                                <label class="Wed" id={{goal.goal_id}}> Wed </label>
+                            <input type="checkbox" name={{goal.goal_id}} value="Thurs">
+                                <label class="Thurs" id={{goal.goal_id}}> Thurs </label>
+                            <input type="checkbox" name={{goal.goal_id}} value="Fri">
+                                <label class="Fri" id={{goal.goal_id}}> Fri </label>
+                            <input type="checkbox" name={{goal.goal_id}} value="Sat">
+                                <label class="Sat" id={{goal.goal_id}}> Sat </label>
+                            <input type="checkbox" name={{goal.goal_id}} value="Sun">
+                                <label class="Sun" id={{goal.goal_id}}> Sun </label>
+                        </form>
+                          {% endfor %}
+                    </ul>
+                    
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+<br>
 <a href='/add_goal'>Add another goal for this week!</a>
 <br>
 <br>

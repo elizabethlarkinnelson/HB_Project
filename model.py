@@ -22,6 +22,7 @@ class User(db.Model):
     #This was added to account for eventual addition of user
     #data of timezone.
     time_zone = db.Column(db.String(25), nullable=True)
+    phone_number = db.Column(db.Integer, nullable=True)
 
     def __repr__(self):
 
@@ -81,8 +82,6 @@ class Categories(db.Model):
 
     __tablename__ = "categories"
 
-    #MANY TO MANY ASSOCIATION TABLE TO DO, SECONDARY RELATIONSHIP
-
     cat_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     cat_name = db.Column(db.String(50), nullable=False)
 
@@ -101,6 +100,26 @@ class GoalCat(db.Model):
     goal_cat_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     goal_id = db.Column(db.Integer, db.ForeignKey('goals.goal_id'))
     cat_id = db.Column(db.Integer, db.ForeignKey('categories.cat_id'))
+
+
+class Reminders(db.Model):
+    """Reminders Model"""
+
+    __tablename__ = "reminders"
+
+    reminder_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    goal_id = db.Column(db.Integer, db.ForeignKey('goals.goal_id'))
+    text_days = db.Column(db.String(5), nullable=True)
+
+    goal = db.relationship('Goal', backref='reminders')
+    user = db.relationship('User', secondary='goals', backref='reminders')
+
+    def __repr__(self):
+
+        return "<reminder_id=%s goal_id=%>" % (self.reminder_id, self.goal_id)
+
+
+
 
 ############################################################################
 

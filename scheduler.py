@@ -12,7 +12,7 @@ def change_goal_status():
         goal.active = False
         db.session.commit()
 
-#A function that at 00:05 will take any goal that are 
+#A function that at 00:05 will take any goal that are
 #inactive, but exempt and create another entry of that exact goal
 #for the next week.  The previous instance of that goal
 #will then be made unexempt.
@@ -40,6 +40,8 @@ if __name__ == "__main__":
 
     schedule.every().monday.at("00:01").do(change_goal_status)
 
+
     while True:
         schedule.run_pending()
+        
 
