@@ -24,8 +24,7 @@ app.jinja_env.auto_reload = True
 def index():
     """Homepage"""
 
-    #To account if the user has already signed in
-    #redirect them to their users goals
+    #If the user is already signed in, redirect to goals page
     if "user_id" in session:
         return redirect("/user/%s" % session["user_id"])
     else:
@@ -48,16 +47,17 @@ def register():
     last_name = request.form["last_name"]
     password = request.form["pass1"]
 
-    new_user = User(email=email, first=first_name, last=last_name, password=password)
+    #Check if email already in db
+    if User.query_by_email(email) is True:
+        flash("Email already registered!")
+        return redirect('/sign_up')
 
-    db.session.add(new_user)
-    db.session.commit()
+    #If email not already in db, create user in db
+    else:
+        User.create_user(email, first_name, last_name, password)
 
-    #FIX ME!!! NEED TO WRITE CODE TO ACCOUNT FOR USER EMAIL ALREADY
-    #EXISTING
-
-    flash("Registered! %s, log in to set your goals!" % first_name)
-    return redirect('/')
+        flash("Registered! %s, log in to set your goals!" % first_name)
+        return redirect('/')
 
 
 @app.route('/login', methods=['GET'])
@@ -74,22 +74,18 @@ def login_process():
     email = request.form["email"]
     password = request.form["pass1"]
 
-    #queries goal_tracker db to see if user exists, returns
-    #'None' if user does not exist
-    user = User.query.filter_by(email=email).first()
-
-    if not user:
+    if User.query_by_email(email) is False:
         flash("No such user")
         return redirect('/login')
 
-    if user.password != password:
+    if (User.user_info_object(email)).password != password:
         flash("Incorrect password")
         return redirect('/login')
 
-    session["user_id"] = user.user_id
+    session["user_id"] = (User.user_info_object(email)).user_id
 
     flash("Logged in")
-    return redirect("/user/%s" % user.user_id)
+    return redirect("/user/%s" % session["user_id"])
 
 
 @app.route('/user/<int:user_id>')
@@ -98,18 +94,14 @@ def user_goals(user_id):
 
     user_id = session["user_id"]
 
-    #queries goal_tracker db table 'goals' to see if
-    #the user in the session has goals in table
-    goal = Goal.query.filter_by(user_id=user_id).first()
-
-    if goal is None:
+    if Goal.query_by_user_id(user_id) is False:
         flash("You have no goals! Let's create some!")
         return render_template('create_goal.html')
     else:
-        #store users attributes as an object
-        user = User.query.filter_by(user_id=user_id).one()
-        #store a list of users goals as objects in list
-        goals = Goal.query.filter_by(user_id=user_id).all()
+
+        user = User.query_by_user_id(user_id)
+
+        goals = Goal.query_by_user_id(user_id)
 
         #FIXME!! When refactoring code, need to add % completion
         #which is already written, but needs to be added

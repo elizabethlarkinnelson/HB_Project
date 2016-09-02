@@ -24,6 +24,39 @@ class User(db.Model):
     time_zone = db.Column(db.String(25), nullable=True)
     phone_number = db.Column(db.Integer, nullable=True)
 
+    @classmethod
+    def create_user(cls, email, first, last, password):
+        """Adding a new user to the db"""
+
+        new_user = cls(email=email, first=first, last=last, password=password)
+
+        db.session.add(new_user)
+        db.session.commit()
+
+        return
+
+    @classmethod
+    def query_by_email(cls, email):
+        """See if user email is already in system"""
+
+        if cls.query.filter(cls.email == email).first() is not None:
+            return True
+        else:
+            return False
+
+    @classmethod
+    def query_by_user_id(cls, user_id):
+        """Queries user table by user_id"""
+
+        return cls.query.filter(cls.user_id == user_id).one()
+
+    @classmethod
+    def user_info_object(cls, email):
+        """Return user info as object"""
+
+        if cls.query_by_email(email) is not None:
+            return cls.query.filter(cls.email == email).first()
+
     def __repr__(self):
 
         return "<user_id=%s email=%s first=%s last=%s>" % (self.user_id,
@@ -50,6 +83,15 @@ class Goal(db.Model):
     #time_period unit is in DAYS.
 
     user = db.relationship('User', backref='goals')
+
+    @classmethod
+    def query_by_user_id(cls, user_id):
+        """Queries goal table, returns False is no goals for given user"""
+
+        if cls.query.filter(cls.user_id == user_id).first() is None:
+            return False
+        else:
+            return cls.query.filter(cls.user_id == user_id).all()
 
     def __repr__(self):
 
