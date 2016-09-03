@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, flash, session, redirect, jso
 from flask_debugtoolbar import DebugToolbarExtension
 
 from datetime import datetime
+import pytz
 
 from jinja2 import StrictUndefined
 
@@ -116,7 +117,12 @@ def user_goals(user_id):
             goal_count = Completion.query.filter_by(goal_id=goal.goal_id).count()
             goals_counts[goal.goal_id] = goal_count
 
+        pacific = pytz.timezone('US/Pacific')
+        now = datetime.now(tz=pacific)
+        week_day = now.strftime("%A")
+
         return render_template('user_goals.html',
+                               week_day=week_day,
                                user=user,
                                goals=goals,
                                goals_counts=goals_counts)

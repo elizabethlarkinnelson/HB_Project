@@ -80,26 +80,80 @@ Hello, {{user.first}}!
               <div class="modal-body">
                 <p>I want a reminder for:</p>
                     <ul> {% for goal in goals %}
-                          <li>  {{goal.description}} 
+                            {% if goals_counts[goal.goal_id] / goal.num_of_times == 1 %}
+                            {% else %}
 
-                          </li>
-                        <form>
-                            <input type="checkbox" name={{goal.goal_id}} value="Mon">
-                                <label class="Mon" id={{goal.goal_id}}> Mon </label>
-                            <input type="checkbox" name={{goal.goal_id}} value="Tues">
-                                <label class="Tues" id={{goal.goal_id}}> Tues </label>
-                            <input type="checkbox" name={{goal.goal_id}} value="Wed">
-                                <label class="Wed" id={{goal.goal_id}}> Wed </label>
-                            <input type="checkbox" name={{goal.goal_id}} value="Thurs">
-                                <label class="Thurs" id={{goal.goal_id}}> Thurs </label>
-                            <input type="checkbox" name={{goal.goal_id}} value="Fri">
-                                <label class="Fri" id={{goal.goal_id}}> Fri </label>
-                            <input type="checkbox" name={{goal.goal_id}} value="Sat">
-                                <label class="Sat" id={{goal.goal_id}}> Sat </label>
-                            <input type="checkbox" name={{goal.goal_id}} value="Sun">
-                                <label class="Sun" id={{goal.goal_id}}> Sun </label>
-                        </form>
-                          {% endfor %}
+                              <li>  {{goal.description}} 
+
+                              </li>
+                                <form>
+                                    {% if week_day == 'Monday' %}
+                                    <input type="checkbox" name={{goal.goal_id}} value="Mon">
+                                        <label class="Mon" id={{goal.goal_id}}> Mon </label>
+                                    <input type="checkbox" name={{goal.goal_id}} value="Tues">
+                                        <label class="Tues" id={{goal.goal_id}}> Tues </label>
+                                    <input type="checkbox" name={{goal.goal_id}} value="Wed">
+                                        <label class="Wed" id={{goal.goal_id}}> Wed </label>
+                                    <input type="checkbox" name={{goal.goal_id}} value="Thurs">
+                                        <label class="Thurs" id={{goal.goal_id}}> Thurs </label>
+                                    <input type="checkbox" name={{goal.goal_id}} value="Fri">
+                                        <label class="Fri" id={{goal.goal_id}}> Fri </label>
+                                    <input type="checkbox" name={{goal.goal_id}} value="Sat">
+                                        <label class="Sat" id={{goal.goal_id}}> Sat </label>
+                                    <input type="checkbox" name={{goal.goal_id}} value="Sun">
+                                        <label class="Sun" id={{goal.goal_id}}> Sun </label>
+                                    {% elif week_day == 'Tuesday' %}
+                                    <input type="checkbox" name={{goal.goal_id}} value="Tues">
+                                        <label class="Tues" id={{goal.goal_id}}> Tues </label>
+                                    <input type="checkbox" name={{goal.goal_id}} value="Wed">
+                                        <label class="Wed" id={{goal.goal_id}}> Wed </label>
+                                    <input type="checkbox" name={{goal.goal_id}} value="Thurs">
+                                        <label class="Thurs" id={{goal.goal_id}}> Thurs </label>
+                                    <input type="checkbox" name={{goal.goal_id}} value="Fri">
+                                        <label class="Fri" id={{goal.goal_id}}> Fri </label>
+                                    <input type="checkbox" name={{goal.goal_id}} value="Sat">
+                                        <label class="Sat" id={{goal.goal_id}}> Sat </label>
+                                    <input type="checkbox" name={{goal.goal_id}} value="Sun">
+                                        <label class="Sun" id={{goal.goal_id}}> Sun </label>
+                                    {% elif week_day == 'Wednesday' %}
+                                    <input type="checkbox" name={{goal.goal_id}} value="Wed">
+                                        <label class="Wed" id={{goal.goal_id}}> Wed </label>
+                                    <input type="checkbox" name={{goal.goal_id}} value="Thurs">
+                                        <label class="Thurs" id={{goal.goal_id}}> Thurs </label>
+                                    <input type="checkbox" name={{goal.goal_id}} value="Fri">
+                                        <label class="Fri" id={{goal.goal_id}}> Fri </label>
+                                    <input type="checkbox" name={{goal.goal_id}} value="Sat">
+                                        <label class="Sat" id={{goal.goal_id}}> Sat </label>
+                                    <input type="checkbox" name={{goal.goal_id}} value="Sun">
+                                        <label class="Sun" id={{goal.goal_id}}> Sun </label>
+                                    {% elif week_day == 'Thursday' %}
+                                    <input type="checkbox" name={{goal.goal_id}} value="Thurs">
+                                        <label class="Thurs" id={{goal.goal_id}}> Thurs </label>
+                                    <input type="checkbox" name={{goal.goal_id}} value="Fri">
+                                        <label class="Fri" id={{goal.goal_id}}> Fri </label>
+                                    <input type="checkbox" name={{goal.goal_id}} value="Sat">
+                                        <label class="Sat" id={{goal.goal_id}}> Sat </label>
+                                    <input type="checkbox" name={{goal.goal_id}} value="Sun">
+                                        <label class="Sun" id={{goal.goal_id}}> Sun </label>
+                                    {% elif week_day == 'Friday' %}
+                                    <input type="checkbox" name={{goal.goal_id}} value="Fri">
+                                        <label class="Fri" id={{goal.goal_id}}> Fri </label>
+                                    <input type="checkbox" name={{goal.goal_id}} value="Sat">
+                                        <label class="Sat" id={{goal.goal_id}}> Sat </label>
+                                    <input type="checkbox" name={{goal.goal_id}} value="Sun">
+                                        <label class="Sun" id={{goal.goal_id}}> Sun </label>
+                                    {% elif week_day == 'Saturday' %}
+                                    <input type="checkbox" name={{goal.goal_id}} value="Sat">
+                                        <label class="Sat" id={{goal.goal_id}}> Sat </label>
+                                    <input type="checkbox" name={{goal.goal_id}} value="Sun">
+                                        <label class="Sun" id={{goal.goal_id}}> Sun </label>
+                                    {% elif week_day == 'Sunday' %}
+                                    <input type="checkbox" name={{goal.goal_id}} value="Sun">
+                                        <label class="Sun" id={{goal.goal_id}}> Sun </label>
+                                    {% endif %}
+                                </form>
+                                {% endif %}
+                         {% endfor %}
                     </ul>
                     
               </div>

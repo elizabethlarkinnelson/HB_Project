@@ -56,28 +56,6 @@ $(document).ready(function(){
 
     $('input:radio').on('change', updateGoals);
     $('input:checkbox').on('change', updateReminders);
-    
-
-    // $.ajax({
-    //       type: "POST",
-    //       username: "AC6dd1ef6816c2db5b40f3067d623d6818",
-    //       password: "f38c20243b571437e85bc7f2fbc42ed8",
-    //       url: "https://api.twilio.com/2010-04-01/Accounts/AC6dd1ef6816c2db5b40f3067d623d6818/Messages",
-    //       // xhrFields: {
-    //       //   withCredentials: true
-    //       // },
-    //       data: {
-    //         "To" : "+19493156013",
-    //         "From" : "+19495417040",
-    //         "Body" : "Work"
-    //       },
-    //       success: function(data) {
-    //         console.log(data);
-    //       },
-    //       error: function(data) {
-    //         console.log(data);
-    //       }
-    // });
 
 
 });
