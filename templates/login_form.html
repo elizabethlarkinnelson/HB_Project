@@ -2,17 +2,28 @@
 
 {% block content %}
     <script>$('#login').remove()</script>
-    <div class="container">
-        <div class="row">
-            <div id="sign_in" class="col-md-offset-4 col-md-4">
-                <form action='/login' method="POST">
-                Email:<input type="text" name="email">
-                <br>
-                Password:<input type="password" name="pass1">
-                <br>
-                <input type="submit" value="Done">
-                </form>
-            </div>
-        </div>
-    </div>
+        <form action='/login' method="POST" class="form-horizontal">
+            <fieldset>
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="email">Email:</label>
+                        <div class="col-md-4">
+                        <input id="email" name="email" type="text" class="form-control input-md">
+                        </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="pass1">
+                    Password:</label>
+                        <div class="col-md-4">
+                        <input id="pass1" name="pass1" type="password" class="form-control input-md">
+                        </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="login"></label>
+                    <div class="col-md-4">
+                    <button type="submit" id="login" name="login" class="btn btn-primary">Login</button>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
 {% endblock %}

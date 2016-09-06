@@ -92,4 +92,18 @@ border:px solid #FFFFFF; -webkit-border-radius: px; -moz-border-radius: px;borde
 
 }
 
+#table_headers {
+    font-weight: bold;
+    font-size:200%;
+}
+
+#goal_buttons{
+    text-align: center;
+}
+
+#viz_container{
+    text-align: center;
+}
+
+
 

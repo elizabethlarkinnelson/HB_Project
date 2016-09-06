@@ -22,6 +22,11 @@
               <li class="active"><a href="/">
                 <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
               </a></li>
+                <div class="flash_messages">
+                    {% for flash in get_flashed_messages() %}
+                        {{flash}}
+                    {% endfor %}
+                </div>
             </ul>
             <div id="goal_tracker"> Goal Tracker </div>
             <ul class="nav navbar-nav navbar-right">
@@ -37,15 +42,9 @@
             </ul>
         </div>
     </nav>
-        <div class="flash_messages">
-            {% for flash in get_flashed_messages() %}
-                {{flash}}
-            {% endfor %}
-        </div>
-            {% block content %}
-                STUFF TO CHANGE HERE
-
-            {% endblock %}
+    {% block content %}
+    
+    {% endblock %}
 </body>
 </html>
 
