@@ -1,9 +1,32 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <form action="/sign_up" id="sign_up">
-        New to Goal Tracker?
-        <input type="submit" value="Sign Up!">
-    </form>
+<div class="container">
+    <div class="row">
+        <div class="col-md-offset-4 col-md-4">
+            <p id="quote">
+                "If you want to live a happy life, tie it to a goal"
+                <br>
+                -Einstein
+            </p>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-offset-4 col-md-4">
+            <form class="sign_up" action="/sign_up" id="sign_up">
+                New to Goal Tracker?
+                <br>
+                <br>
+                <input id="sign_up_button" class="sign_up" type="submit" value="Sign Up!">
+            </form>
+        </div>
+    </div>
+</div>
 
 {% endblock %}

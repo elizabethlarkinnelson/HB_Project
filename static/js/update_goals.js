@@ -57,5 +57,4 @@ $(document).ready(function(){
     $('input:radio').on('change', updateGoals);
     $('input:checkbox').on('change', updateReminders);
 
-
 });

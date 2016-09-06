@@ -1,0 +1,95 @@
+body {
+    font-family: 'Source Sans Pro', sans-serif;
+    background-image: url(CD834M1H0R.png);
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.navbar.navbar-inverse {
+    background-color: rgb(127, 255, 212);
+
+}
+
+.navbar-inverse {
+    border-color: rgb(127, 255, 212) ;
+}
+
+
+.navbar-inverse .navbar-nav .active a {
+    border-radius: 10px;
+    margin-top: 5px;
+}
+
+a {
+    color: white;
+}
+
+#login {
+    font-size: 150%;
+    padding-right: 25px;
+}
+
+#goal_tracker{
+    text-align: center;
+    margin-top: 25px;
+    color: white;
+    font-family: 'Pacifico', cursive;
+    font-size: 400%;
+}
+
+.container-fluid {
+    height: 150px;
+}
+
+#quote {
+    font-size: 250%;
+    text-align: center;
+}
+
+.sign_up {
+    text-align: center;
+    font-size: 110%
+}
+
+#sign_in {
+    text-align: center;
+}
+
+#new_user {
+    text-align: center;
+}
+
+#sign_up_button {
+border:px solid #FFFFFF; -webkit-border-radius: px; -moz-border-radius: px;border-radius: px;width:px;font-size:px;font-family:arial, helvetica, sans-serif; padding: 10px 10px 10px 10px; text-decoration:none; display:inline-block; color: #FFFFFF;
+ background-color: #45484d; background-image: -webkit-gradient(linear, left top, left bottom, from(#45484d), to(#000000));
+ background-image: -webkit-linear-gradient(top, #45484d, #000000);
+ background-image: -moz-linear-gradient(top, #45484d, #000000);
+ background-image: -ms-linear-gradient(top, #45484d, #000000);
+ background-image: -o-linear-gradient(top, #45484d, #000000);
+ background-image: linear-gradient(to bottom, #45484d, #000000);filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#45484d, endColorstr=#000000);
+}
+
+#sign_up_button {
+ border:px solid #FFFFFF;
+ background-color: #2d2f32; background-image: -webkit-gradient(linear, left top, left bottom, from(#2d2f32), to(#1a1a1a));
+ background-image: -webkit-linear-gradient(top, #2d2f32, #1a1a1a);
+ background-image: -moz-linear-gradient(top, #2d2f32, #1a1a1a);
+ background-image: -ms-linear-gradient(top, #2d2f32, #1a1a1a);
+ background-image: -o-linear-gradient(top, #2d2f32, #1a1a1a);
+ background-image: linear-gradient(to bottom, #2d2f32, #1a1a1a);filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#2d2f32, endColorstr=#1a1a1a);
+}
+
+#div1{
+    margin-left: 35%;
+    text-align: center;
+}
+
+.form-horizontal .control-label {
+    font-weight:bold;
+    font-size: 22px;
+
+}
+
+

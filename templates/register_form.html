@@ -2,23 +2,47 @@
 
 {% block content %}
 
-    <form action="/register" method="POST">
-        Email:<input type="text" name="email">
-        <br>
-        First Name:<input type="text" name="first_name">
-        <br>
-        Last Name:<input type="text" name="last_name">
-        <br>
-        <label for="pass1">Password:</label>
-        <input type="password" name="pass1" id="pass1">
-        <br>
-        <label for="pass2">Confirm Password:</label>
-        <input type="password" name="pass2" id="pass2" onkeyup="checkPass(); return false;">
-        <br>
-        <div id="confirmMessage" class="confirmMessage"></div>
-        <br>
-
-        <input type="submit" value="DONE! Now, tell me what you want to accomplish">    
-    </form>
+            <form action="/register" method="POST" class="form-horizontal">
+                <fieldset>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label" for="email">Email:</label>
+                        <div class="col-md-4">
+                        <input id="email" name="email" type="text" class="form-control input-md">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label" for="First Name">First Name:</label>
+                        <div class="col-md-4">
+                        <input id="First Name" name="first_name" type="text" class="form-control input-md">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label" for="Last Name">Last Name:</label>
+                        <div class="col-md-4">
+                        <input id="Last Name" name="last_name" type="text" class="form-control input-md">
+                        </div>
+                    </div>
+                     <div class="form-group">
+                        <label class="col-md-4 control-label" for="pass1">Password:</label>
+                        <div class="col-md-4">
+                        <input id="pass1" name="pass1" type="password" class="form-control input-md">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label" for="pass2">Confirm Password:</label>
+                        <div class="col-md-4">
+                        <input id="pass2" name="pass2" type="password" class="form-control input-md" onkeyup="checkPass(); return false">
+                        </div>
+                        <br>
+                        <div id="confirmMessage" class="confirmMessage"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label" for="login"></label>
+                        <div class="col-md-4">
+                        <button type="submit" id="login" name="login" class="btn btn-primary">Login</button>
+                        </div>
+                    </div> 
+                </fieldset>  
+            </form>
 
 {% endblock %}

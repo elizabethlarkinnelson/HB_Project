@@ -5,21 +5,25 @@
     <title>Goal Tracker</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
-    <link rel="stylesheet" href="/static/goal_tracker.css">
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Pacifico|Source+Sans+Pro" rel="stylesheet"> 
+    <link rel="stylesheet" href="/static/goal_tracker.css">
     <script src="/static/goal_tracker.js"></script>
     {% block page_specific_script_tag %}{% endblock %}
 
 </head>
 <body>
     <!-- This is modified bootstrap "Right-Aligned Navigation Bar" -->
-     <nav class="navbar navbar-inverse">
+    <nav class="navbar navbar-inverse">
         <div class="container-fluid">
             <div class="navbar-header">
             </div>
             <ul class="nav navbar-nav">
-              <li class="active"><a href="/">Home</a></li>
+              <li class="active"><a href="/">
+                <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+              </a></li>
             </ul>
+            <div id="goal_tracker"> Goal Tracker </div>
             <ul class="nav navbar-nav navbar-right">
                 <div id='login'>
                 {% block div %}
@@ -33,20 +37,15 @@
             </ul>
         </div>
     </nav>
+        <div class="flash_messages">
+            {% for flash in get_flashed_messages() %}
+                {{flash}}
+            {% endfor %}
+        </div>
+            {% block content %}
+                STUFF TO CHANGE HERE
 
-        <br>
-    <div class="flash_messages">
-        {% for flash in get_flashed_messages() %}
-            {{flash}}
-        {% endfor %}
-    </div>
-
-    <div class="block">
-        {% block content %}
-            STUFF TO CHANGE HERE
-
-        {% endblock %}
-    </div>
+            {% endblock %}
 </body>
 </html>
 
