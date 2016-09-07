@@ -1,6 +1,6 @@
 # Goal Tracker
 
-An all-in-one application to help achieve your goals.   Goal Tracker is tailored to your needs, sending text reminders when you need it most.  Goal Tracker acts as the best sort of planner, keeping track of the areas where you're success is great and focusing your energy to the goals that need it most visualizing your success in the goals you've categorized.
+An all-in-one application to help achieve your goals.   Goal Tracker is tailored to your needs, sending text reminders when you need it most.  Goal Tracker acts as the best sort of planner, keeping track of the areas you excel in and focusing your energy where you need it most.
 
 ##Tech Stack
 
