@@ -22,6 +22,10 @@ $(document).ready(function(){
         $("#"+result.goal_id+"."+result.week_day).remove();
     }
 
+    function callTwilio(result){
+        $('#text_form').remove();
+        console.log(result.phone_number);
+    }
 
 
 
@@ -52,9 +56,30 @@ $(document).ready(function(){
 
     }
 
+    function sendText(evt){
+
+        evt.preventDefault();
+        
+
+        var formInput = {
+            "phone_number": $('#phone_number').val(),
+        };
+
+        console.log(formInput["phone_number"]);
+        
+
+        $.post("/send_sms.json",
+                formInput,
+                callTwilio);
+
+    }
+
+
 
 
     $('input:radio').on('change', updateGoals);
     $('input:checkbox').on('change', updateReminders);
+    $('#sms_test').on('click', sendText);
+
 
 });

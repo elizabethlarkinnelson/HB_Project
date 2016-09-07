@@ -8,6 +8,7 @@ from jinja2 import StrictUndefined
 
 from model import connect_to_db, db, User, Goal, Completion, Categories, Reminders
 
+import send_sms
 
 #app variable binding for argument in connect_to_db function in model
 app = Flask(__name__)
@@ -121,6 +122,8 @@ def user_goals(user_id):
         now = datetime.now(tz=pacific)
         week_day = now.strftime("%A")
 
+        flash("Hello %s" % user.first)
+
         return render_template('user_goals.html',
                                week_day=week_day,
                                user=user,
@@ -161,7 +164,7 @@ def submit_goals():
     db.session.add(goal)
     db.session.commit()
 
-    flash("Your goal was added!")
+    flash("Goal Added!")
 
     return redirect("/user/%s" % user_id)
 
@@ -259,6 +262,17 @@ def set_text_reminder():
     db.session.commit()
 
     return jsonify(week_day=week_day, goal_id=goal_id)
+
+@app.route('/send_sms.json', methods=['POST'])
+def test_text():
+
+    phone_number = request.form.get("phone_number")
+
+    print "\n\n\n\n\n\n", phone_number, "\n\n\n\n"
+
+    send_sms.send_text(str(phone_number))
+
+    return jsonify(phone_number=phone_number)
 
 
 @app.route('/logout')

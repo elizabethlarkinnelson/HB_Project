@@ -4,8 +4,6 @@
 {% endblock %}
 {% block content %}
 
-Hello, {{user.first}}!
-
 <br>
 <br>
 
@@ -147,8 +145,10 @@ Hello, {{user.first}}!
                             
                       </div>
                       <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="button" id="sms_test" class="btn btn-default">Test My Number!</button>
+                        <form id="text_form" action='/send_text' method="POST">
+                            <button type="button" id="sms_test" class="btn btn-default">Test My Number!</button>
+                            <input id="phone_number" type="text" name="phone_number">
+                        </form>
                       </div>
 
                     </div>

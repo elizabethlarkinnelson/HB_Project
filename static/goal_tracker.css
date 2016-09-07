@@ -101,9 +101,19 @@ border:px solid #FFFFFF; -webkit-border-radius: px; -moz-border-radius: px;borde
     text-align: center;
 }
 
+#goal_buttons #myModal {
+    text-align: left;
+}
+
 #viz_container{
     text-align: center;
 }
+
+#create_goal {
+    text-align: center;
+    font-size: 115%;
+}
+
 
 
 
