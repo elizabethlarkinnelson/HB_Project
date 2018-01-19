@@ -2,13 +2,13 @@
 
 An all-in-one application to help achieve your goals.   Goal Tracker is tailored to your needs, sending text reminders when you need it most.  Goal Tracker acts as the best sort of planner, keeping track of the areas you excel in and focusing your energy where you need it most.
 
-##Tech Stack
+## Tech Stack
 
 **Frontend:** HTML, CSS, Javascript, AJAX, jQuery, D3, Bootstrap, Jinja</br>
 **Backend:** Python, Javascript, Flask, PosgreSQL
 **API's**: Python Scheduler API, Twilio API
 
-##Set up
+## Set up
 
 Clone or fork this repo:
 
